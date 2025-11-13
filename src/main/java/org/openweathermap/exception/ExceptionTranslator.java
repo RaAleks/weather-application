@@ -16,8 +16,8 @@ public class ExceptionTranslator {
     public ResponseEntity<ErrorDto> handeException(Exception ex) {
         ErrorDto errorResponse = new ErrorDto(
                 LocalDateTime.now(),
-                "Error",
-                null);
+                ex.getMessage()
+        );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

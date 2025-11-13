@@ -1,16 +1,18 @@
 package org.openweathermap.service;
 
 import lombok.RequiredArgsConstructor;
-import org.openweathermap.dto.CityWeatherInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.openweathermap.dto.remote.LocationResponse;
 import org.openweathermap.dto.remote.WeatherResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class WeatherService {
 
     private final CacheService cacheService;
@@ -19,19 +21,38 @@ public class WeatherService {
 
     public WeatherResponse fetchWeather(String city,
                                         String apiKey) {
-        WeatherResponse cachedCityWeatherInfo = cacheService.getIfPresent(city);
+
+        WeatherResponse cachedCityWeatherInfo = cacheService.getWeatherIfPresent(city);
 
         if (Objects.nonNull(cachedCityWeatherInfo)) {
             return cachedCityWeatherInfo;
         }
 
-        LocationResponse locationResponse = geoDecoderService.decodeCity(city, apiKey);
+        if (Objects.isNull(apiKey)) {
+            log.warn("Api key is empty, using default");
+            apiKey = cacheService.getDefaultApiKey();
+        }
 
+        List<LocationResponse> locationResponseArr = geoDecoderService.decodeCity(city, apiKey);
+
+        LocationResponse locationResponse = locationResponseArr.get(0);
         WeatherResponse cityWeatherInfo = geoDecoderService.fetchWeather(locationResponse.lat(), locationResponse.lon(), apiKey);
 
-        cacheService.put(city, cityWeatherInfo);
+        cacheService.putWeather(city, cityWeatherInfo);
+
 
         return cityWeatherInfo;
+    }
+
+    public WeatherResponse fetchWithUsername(String city,
+                                             String username) {
+        String apiKey = cacheService.getKeyIfPresent(username);
+
+        if (Objects.isNull(apiKey)) {
+            throw new IllegalArgumentException(String.format("Unable to fetch weather, no api key for username [%s]", username));
+        }
+
+        return fetchWeather(city, apiKey);
     }
 
 }

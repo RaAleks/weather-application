@@ -1,8 +1,15 @@
+server:
+  servlet:
+    context-path: /api
+
 openweather:
   url: http://api.openweathermap.org
+  api-key: 74e8f21d865dcbdf40477441f7c30beb
 
 weather:
   cache:
     expiration-minutes: 5
     size: 10
-  scheduled: false
+  scheduled: true
+  scheduler:
+    fixedRate: 600000

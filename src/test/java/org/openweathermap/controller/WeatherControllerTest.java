@@ -1,6 +1,7 @@
 package org.openweathermap.controller;
 
 import org.junit.jupiter.api.Test;
+import org.openweathermap.controller.v1.WeatherController;
 import org.openweathermap.dto.remote.*;
 import org.openweathermap.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ public class WeatherControllerTest {
         String apiKey = "dummy-key";
         String city = "Turin";
 
-        // Создаем mock WeatherResponse
         WeatherResponse mockResponse = new WeatherResponse(
                 new Coord(7.367, 45.133),
                 List.of(new Weather(501, "Rain", "moderate rain", "10d")),
@@ -48,18 +48,20 @@ public class WeatherControllerTest {
                 200
         );
 
-        // Мокаем сервис
-        when(weatherService.fetchWeather(apiKey, city)).thenReturn(mockResponse);
+        when(weatherService.fetchWeather(city, apiKey)).thenReturn(mockResponse);
 
-        // Выполняем GET-запрос
-        mockMvc.perform(get("/weather/{city}", city)
+        Weather weather = mockResponse.weather().get(0);
+        Main main = mockResponse.main();
+        Wind wind = mockResponse.wind();
+
+        mockMvc.perform(get("/v1/weather/{city}/custom", city)
                         .header("Api-Key", apiKey)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Province of Turin"))
-                .andExpect(jsonPath("$.main.temp").value(284.2))
-                .andExpect(jsonPath("$.weather[0].description").value("moderate rain"))
-                .andExpect(jsonPath("$.wind.speed").value(4.09))
-                .andExpect(jsonPath("$.rain.oneHour").value(2.73));
+                .andExpect(jsonPath("$.name").value(mockResponse.name()))
+                .andExpect(jsonPath("$.temperature.temp").value(main.temp()))
+                .andExpect(jsonPath("$.weather.main").value(weather.main()))
+                .andExpect(jsonPath("$.weather.description").value(weather.description()))
+                .andExpect(jsonPath("$.wind.speed").value(wind.speed()));
     }
 }

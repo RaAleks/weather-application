@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class OpenweatherApplicationTest {
 
     @Test
-    public void shouldLoadContext(){
+    public void shouldLoadContext() {
     }
 
 }
