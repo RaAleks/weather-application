@@ -4,12 +4,12 @@ server:
 
 openweather:
   url: http://api.openweathermap.org
-  api-key: 74e8f21d865dcbdf40477441f7c30beb
+  api-key: ${API_KEY}
 
 weather:
   cache:
-    expiration-minutes: 5
-    size: 10
-  scheduled: true
+    expiration-minutes: 5}
+    size: ${CACHE_SIZE}
+  scheduled: ${WEATHER_SCHEDULED:false}
   scheduler:
-    fixedRate: 600000
+    fixedRate: ${EXPIRATION_MINUTES:600000}
