@@ -1,0 +1,7 @@
+.gradle
+/build/
+.idea
+etc/cas/cas.crt
+etc/cas/thekeystore
+/local/postgres-data
+/local/redis-data

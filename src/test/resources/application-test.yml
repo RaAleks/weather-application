@@ -1,0 +1,8 @@
+openweather:
+  url: http://api.openweathermap.org
+
+weather:
+  cache:
+    expiration-minutes: 5
+    size: 10
+  scheduled: false
