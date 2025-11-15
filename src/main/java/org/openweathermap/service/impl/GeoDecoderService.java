@@ -1,4 +1,4 @@
-package org.openweathermap.service;
+package org.openweathermap.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.openweathermap.dto.remote.LocationResponse;

@@ -23,7 +23,7 @@ public class ServiceConfig {
 
     public ServiceConfig(@Value("${weather.cache.expiration-minutes}") Integer weatherCacheExpiration,
                          @Value("${weather.cache.size}") Integer weatherCacheSize,
-                         @Value("${weather.cache.size}") Integer keyCacheSize) {
+                         @Value("${weather.cache.key.size}") Integer keyCacheSize) {
         this.weatherCacheExpiration = weatherCacheExpiration;
         this.weatherCacheSize = weatherCacheSize;
         this.keyCacheSize = keyCacheSize;
@@ -37,7 +37,7 @@ public class ServiceConfig {
 
     @Bean
     public Cache<String, String> keyCache() {
-        log.info("Building key cache with size {} and expiration {}", 10);
+        log.info("Building key cache with size {}", keyCacheSize);
         return Caffeine.newBuilder().maximumSize(weatherCacheSize).build();
     }
 }

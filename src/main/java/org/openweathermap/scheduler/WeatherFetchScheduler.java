@@ -2,8 +2,8 @@ package org.openweathermap.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openweathermap.service.CacheService;
-import org.openweathermap.service.WeatherService;
+import org.openweathermap.service.impl.CacheService;
+import org.openweathermap.service.impl.WeatherServiceImpl;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class WeatherFetchScheduler {
             "Washington"
     );
 
-    private final WeatherService weatherService;
+    private final WeatherServiceImpl weatherService;
     private final CacheService cacheService;
 
     @Scheduled(fixedRateString = "${weather.scheduler.fixedRate}")

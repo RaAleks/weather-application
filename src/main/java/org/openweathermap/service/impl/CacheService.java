@@ -1,4 +1,4 @@
-package org.openweathermap.service;
+package org.openweathermap.service.impl;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import org.openweathermap.dto.remote.WeatherResponse;

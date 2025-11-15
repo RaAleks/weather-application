@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openweathermap.dto.remote.*;
+import org.openweathermap.service.impl.CacheService;
 
 import java.util.List;
 
