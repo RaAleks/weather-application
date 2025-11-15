@@ -1,4 +1,0 @@
-weather:
-  scheduled: true
-  scheduler:
-    fixedRate: 5000
